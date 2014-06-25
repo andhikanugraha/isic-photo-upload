@@ -13,7 +13,10 @@ var serveStatic = require('serve-static');
 var errorHandler = require('errorhandler');
 var hbs = require('hbs');
 var lessMiddleware = require('less-middleware');
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook').Strategy;
 
+var db = require('./db');
 var routes = require('./routes');
 
 // Config initialisation
@@ -33,6 +36,40 @@ if (config.redis) {
   var redisSessionStore = new RedisStore({ client: redisClient });
 }
 
+// Passport initialisation
+passport.serializeUser(function(user, done) {
+  if (user.facebookId) {
+    return done(null, { facebookId: user.facebookId });
+  }
+
+  done(null, { id: user.id });
+});
+
+passport.deserializeUser(function(user, done) {
+  db.User.find({ id: user.id })
+  .success(function(user) {
+    done(null, user);
+  }).error(done);
+});
+
+passport.use(new FacebookStrategy({
+  clientID: config.facebook.appId,
+  clientSecret: config.facebook.secret,
+  callbackURL: config.baseUrl + '/auth/facebook/callback'
+}, function(accessToken, refreshToken, profile, done) {
+  var email = '';
+  if (profile.emails && profile.emails[0] && profile.emails[0].value) {
+    email = profile.emails[0].value;
+  }
+
+  db.User.findOrCreate({ facebookId: profile.id }, {
+    displayName: profile.displayName,
+    email: email
+  }).success(function(user) {
+    done(null, user);
+  }).error(done);
+}));
+
 // Express initialisation
 var app = express();
 module.exports = app;
@@ -51,6 +88,8 @@ app.use(session({
   secret: config.secret,
   proxy: true
 }));
+app.use(passport.initialize());
+app.use(passport.session({ secret: config.secret }));
 app.use(methodOverride());
 app.use('/css', lessMiddleware(
   __dirname + '/less',
@@ -66,6 +105,18 @@ app.get('/favicon.ico', function(req, res, next) {
 });
 
 // Insert routes here
+app.get('/auth/facebook', passport.authenticate('facebook', {
+  scope: 'email'
+}));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+  successRedirect: '/upload',
+  failureRedirect: '/?error=login'
+}));
+app.get('/logout', function(req, res, next) {
+  req.logout();
+  req.redirect('/');
+});
+
 app.use(routes);
 
 // Error handling
@@ -82,6 +133,8 @@ else {
   });
 }
 
-app.listen(config.port, function() {
-  console.log('Express listening to port ' + config.port);
+db.sequelize.sync().success(function() {
+  app.listen(config.port, function() {
+    console.log('Express listening to port ' + config.port);
+  });
 });

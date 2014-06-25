@@ -1,3 +1,10 @@
+baseUrl: http://localhost:3000
+facebook:
+  appId: '1430649763878341'
+sequelize:
+  database: database
+  username: root
+  password:
 sizes:
   large: 1280
   medium: 640
