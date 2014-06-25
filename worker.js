@@ -1,11 +1,17 @@
+var path = require('path');
 var _ = require('lodash');
 var async = require('async');
+var azureStorage = require('azure-storage');
 var config = require('config');
 var gm = require('gm');
 var kue = require('kue');
 var tmp = require('tmp');
 
 var jobs = kue.createQueue();
+
+var blobService = azureStorage.createBlobService(
+                    config.azureStorage.accountName,
+                    config.azureStorage.accountKey);
 
 var LARGE_SIZE = config.sizes.large || 1280;
 var MEDIUM_SIZE = config.sizes.medium || 640;
@@ -194,7 +200,39 @@ function processResizing(jobData, callback) {
 
 function processUpload(jobData, callback) {
   // Upload files from temp dir to azure blob storage
-  callback();
+  var toUpload = [
+    jobData.fullPath, jobData.largePath,
+    jobData.mediumPath, jobData.thumbnailPath
+  ];
+
+  async.each(toUpload, function(originPath, callback) {
+    var basename = path.basename(originPath);
+    var destinationPath = jobData.uuid + '/' + basename;
+    blobService.createBlockBlobFromFile(
+      config.azureStorage.container,
+      destinationPath,
+      originPath,
+      {
+        contentType: 'image/jpeg'
+      },
+      function(err, result, response) {
+        if (err) {
+          return callback(err);
+        }
+
+        console.log(destinationPath);
+        console.log(arguments);
+        callback();
+      }
+    );
+  }, function(err) {
+    if (err) {
+      console.error(arguments);
+      return callback('upload_error');
+    }
+
+    callback();
+  });
 }
 
 function processDbSave(jobData, callback) {
@@ -203,6 +241,9 @@ function processDbSave(jobData, callback) {
 }
 
 function handleJobError(err, data, callback) {
+  if (err) {
+    console.error(err);
+  }
   callback(err, data);
 }
 

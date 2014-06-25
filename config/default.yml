@@ -5,7 +5,12 @@ sequelize:
   database: database
   username: root
   password:
+azureStorage:
+  accountName: devstoreaccount1
+  accountKey: Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
+  container: isicphotocomp
 sizes:
+  minimum: 1600
   large: 1280
   medium: 640
   thumbnail: 240
