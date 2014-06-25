@@ -54,7 +54,40 @@ function processJob(job, callback) {
 }
 
 function processValidation(jobData, callback) {
-  callback();
+  var originalImg = gm(jobData.src);
+
+  async.series([
+    function checkFormat(callback) {
+      console.log('checkFormat');
+      originalImg.format(function(err, format) {
+        if (err) {
+          return callback(err);
+        }
+
+        if (format !== 'JPEG') {
+          return callback('validation_error', 'format');
+        }
+
+        callback();
+      });
+    },
+    function checkSize(callback) {
+      console.log('checkSize');
+      originalImg.size(function(err, size) {
+        if (err) {
+          return callback(err);
+        }
+
+        var longestDimension = Math.max(size.width, size.height);
+        if (longestDimension < config.sizes.minimum) {
+          console.log('zsdproblem');
+          return callback('validation_error', 'size');
+        }
+
+        return callback();
+      });
+    }
+  ], callback);
 }
 
 function processTmp(jobData, callback) {
