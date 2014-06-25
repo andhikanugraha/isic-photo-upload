@@ -3,10 +3,6 @@
 // Modules
 var path = require('path');
 var config = require('config');
-var moment = require('moment-timezone');
-var formidable = require('formidable');
-var sha1 = require('sha1');
-var fse = require('fs-extra');
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -17,6 +13,8 @@ var serveStatic = require('serve-static');
 var errorHandler = require('errorhandler');
 var hbs = require('hbs');
 var lessMiddleware = require('less-middleware');
+
+var routes = require('./routes');
 
 // Config initialisation
 if (!config.port) {
@@ -46,7 +44,7 @@ app.set('view options', {layout: 'layouts/main'});
 
 // Middleware setup
 app.use(morgan('dev'));
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
   store: config.redis ? redisSessionStore : undefined,
@@ -64,11 +62,11 @@ app.use(serveStatic(__dirname + '/public'));
 
 // Actions
 app.get('/favicon.ico', function(req, res, next) {
-  res.redirect('http://static.wixstatic.com/ficons/' +
-               '89355b_8adb1bc8d31a9b11a84eec6107dc1b89_fi.ico');
+  res.redirect(config.favicon);
 });
 
 // Insert routes here
+app.use(routes);
 
 // Error handling
 if (app.get('env') == 'development') {
