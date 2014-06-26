@@ -1,19 +1,21 @@
 module.exports = function(sequelize, DataTypes) {
-  var User = sequelize.define('User', {
+  return sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
-    facebookId: DataTypes.STRING,
+    facebookId: {
+      type: DataTypes.STRING,
+      unique: true
+    },
     displayName: DataTypes.STRING,
     email: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
-        User.hasMany(models.Submission);
+        this.hasMany(models.Submission);
       }
     }
   });
-
-  return User;
 };

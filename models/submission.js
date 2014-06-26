@@ -1,18 +1,15 @@
 module.exports = function(sequelize, DataTypes) {
-  var Submission = sequelize.define('Submission', {
-    id: {
-      type: DataTypes.INTEGER,
+  return sequelize.define('Submission', {
+    uuid: {
+      type: DataTypes.STRING,
       primaryKey: true
     },
-    uuid: DataTypes.STRING,
     category: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
-        Submission.belongsTo(models.User);
+        this.belongsTo(models.User);
       }
     }
   });
-
-  return Submission;
 };
