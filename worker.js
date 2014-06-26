@@ -7,6 +7,8 @@ var gm = require('gm');
 var kue = require('kue');
 var tmp = require('tmp');
 
+var db = require('./db');
+
 var jobs = kue.createQueue();
 
 var blobService = azureStorage.createBlobService(
@@ -220,15 +222,12 @@ function processUpload(jobData, callback) {
           return callback(err);
         }
 
-        console.log(destinationPath);
-        console.log(arguments);
         callback();
       }
     );
   }, function(err) {
     if (err) {
-      console.error(arguments);
-      return callback('upload_error');
+      return callback('upload', err);
     }
 
     callback();
@@ -237,7 +236,35 @@ function processUpload(jobData, callback) {
 
 function processDbSave(jobData, callback) {
   // Save the Submission instance to DB
-  callback();
+  db.User.find({id: jobData.userId})
+  .success(function(user) {
+    user.getSubmissions({
+      where: { category: jobData.category }
+    }).success(function(submissions) {
+      if (submissions.length >= 3) {
+        return callback('db', 'too_many_submissions');
+      }
+
+      var submission = db.Submission.build({
+        uuid: jobData.uuid,
+        // UserId: jobData.userId,
+        category: jobData.category
+      });
+
+      submission.setUser(user);
+
+      submission.save().success(function() {
+        console.log('hmmc');
+        callback();
+      }).error(function(err) {
+        console.log('hmmma');
+        callback('db', err);
+      });
+    });
+  }).error(function(err) {
+    console.log('hmmm');
+    callback('db', err);
+  });
 }
 
 function handleJobError(err, data, callback) {
