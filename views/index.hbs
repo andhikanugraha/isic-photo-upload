@@ -1,0 +1,19 @@
+<div class="row">
+
+  <div class="col-md-6">
+    <h3>Submit your work</h3>
+
+    {{#if loggedIn}}
+    <p>Head to the submissions page to view your submissions and submit new works.</p>
+    <p><a href="/submission" class="btn btn-success">Submissions</a></p>
+    {{else}}
+    <p>Log in using your Facebook account to submit your work and join the photography competition.</p>
+    <p><a href="/auth/facebook" class="btn btn-primary">Sign in using Facebook</a></p>
+    {{/if}}
+  </div>
+
+  <div class="col-md-6">
+    <h3>Vote for submissions</h3>
+  </div>
+
+</div>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Photo Competition | ISIC 2014</title>
+
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/favicon.ico" rel="shortcut icon">
+    {{!-- <link href="http://isic-tiimi.co.uk/#conference/c1qns" rel="up"> --}}
+    <link href="http://isic-tiimi.co.uk/" rel="index up up">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="container">
+
+      <header>
+        <h1><a href="http://isic-tiimi.co.uk/"><img src="http://static.wixstatic.com/media/89355b_d937999d099e4fd3b42a58c29df056a3.png_srz_p_242_74_75_22_0.50_1.20_0.00_png_srz" alt="ISIC 2014"></a></h1>
+      </header>
+
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ISIC 2014 Photography Competition</a>
+          </div>
+          <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li{{#if submissionSection}} class="active"{{/if}}><a href="/submission">Submission</a></li>
+              <li{{#if votingSection}} class="active"{{/if}}><a href="/vote">Voting</a>
+            </ul>
+            <div class="navbar-right">
+              {{#if loggedIn}}
+              <p class="navbar-text">Logged in as <strong>{{user.displayName}}</strong></p>
+              <a class="btn btn-default navbar-btn" href="/logout">Log out</a>
+              {{else}}
+              <a class="btn btn-default navbar-btn" href="/auth/facebook">Log in using Facebook</a>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {{{body}}}
+
+    </div>
+
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

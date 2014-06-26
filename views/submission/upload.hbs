@@ -1,0 +1,40 @@
+<header class="page-header">
+	<h3 class="page">Submit new entry</h3>
+</header>
+
+<div class="row">
+	<div class="col-sm-6">
+		<h4>Requirements for uploads</h4>
+		<p>(Insert paragraphs from the rulebook)</p>
+	</div>
+	<div class="col-sm-6">
+		<h4>Upload for category: {{categoryTitle}}</h4>
+		{{#if error}}
+		{{#if invalidFormat}}
+		<div class="alert alert-danger">
+			The photo you uploaded was not meet our format requirements.
+		</div>
+		{{/if}}
+		{{#if invalidFormat}}
+		<div class="alert alert-danger">
+			The photo you uploaded did not meet our size requirements.
+		</div>
+		{{/if}}
+		{{#if noFiles}}
+		<div class="alert alert-danger">
+			You forgot to select your file.
+		</div>
+		{{/if}}
+		{{/if}}
+		<form action="/submission/upload/{{categoryId}}" method="POST" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="inputFile">Photo to upload</label>
+				<input type="file" name="file" id="inputFile" required accept="image/jpeg">
+				<p class="help-block">Make sure you adhere to the requirements on the left.</p>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success">Upload submission</button>
+			</div>
+		</form>
+	</div>
+</div>

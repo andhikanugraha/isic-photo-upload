@@ -3,6 +3,7 @@ var _ = require('lodash');
 var async = require('async');
 var azureStorage = require('azure-storage');
 var config = require('config');
+var fse = require('fs-extra');
 var gm = require('gm');
 var kue = require('kue');
 var tmp = require('tmp');
@@ -17,6 +18,7 @@ var blobService = azureStorage.createBlobService(
 
 var LARGE_SIZE = config.sizes.large || 1280;
 var MEDIUM_SIZE = config.sizes.medium || 640;
+var SMALL_SIZE = config.sizes.small || 320;
 var THUMBNAIL_SIZE = config.sizes.thumbnail || 240;
 
 function processJob(job, callback) {
@@ -54,10 +56,14 @@ function processJob(job, callback) {
     dbSave: function(callback) {
       console.log('Saving to db...');
       processDbSave(jobData, callback);
+    },
+    cleanUp: function(callback) {
+      console.log('Cleaning up temporary files...');
+      processCleanUp(jobData, callback);
     }
   }, function(err, data) {
     console.log('Finished job in ' + (_.now() - start));
-    handleJobError(err, data, callback);
+    handleJobError(err, data, job, callback);
   });
 }
 
@@ -116,11 +122,13 @@ function processResizing(jobData, callback) {
   var fullPath = tmpPath + '/full.jpg';
   var largePath = tmpPath + '/large.jpg';
   var mediumPath = tmpPath + '/medium.jpg';
+  var smallPath = tmpPath + '/small.jpg';
   var thumbnailPath = tmpPath + '/thumbnail.jpg';
 
   jobData.fullPath = fullPath;
   jobData.largePath = largePath;
   jobData.mediumPath = mediumPath;
+  jobData.smallPath = smallPath;
   jobData.thumbnailPath = thumbnailPath;
 
   var originalImg = gm(jobData.src);
@@ -169,9 +177,18 @@ function processResizing(jobData, callback) {
       }
       largeImg.write(mediumPath, callback);
     },
+    function generateSmall(callback) {
+      mediumImg = gm(mediumPath);
+      if (isPortrait) {
+        mediumImg.resize(null, SMALL_SIZE);
+      }
+      else {
+        mediumImg.resize(SMALL_SIZE);
+      }
+      mediumImg.write(smallPath, callback);
+    },
     function generateThumbnail(callback) {
       var cropX, cropY, cropSize, ratio;
-      var mediumImg = gm(mediumPath);
       if (isPortrait) {
         ratio = MEDIUM_SIZE / originalSize.height;
         cropSize = originalSize.width * ratio;
@@ -203,8 +220,8 @@ function processResizing(jobData, callback) {
 function processUpload(jobData, callback) {
   // Upload files from temp dir to azure blob storage
   var toUpload = [
-    jobData.fullPath, jobData.largePath,
-    jobData.mediumPath, jobData.thumbnailPath
+    jobData.fullPath, jobData.largePath, jobData.mediumPath,
+    jobData.smallPath, jobData.thumbnailPath
   ];
 
   async.each(toUpload, function(originPath, callback) {
@@ -247,30 +264,35 @@ function processDbSave(jobData, callback) {
 
       var submission = db.Submission.build({
         uuid: jobData.uuid,
-        // UserId: jobData.userId,
+        UserId: jobData.userId,
         category: jobData.category
       });
 
-      submission.setUser(user);
+      // submission.setUser(user);
 
       submission.save().success(function() {
-        console.log('hmmc');
         callback();
       }).error(function(err) {
-        console.log('hmmma');
         callback('db', err);
       });
     });
   }).error(function(err) {
-    console.log('hmmm');
     callback('db', err);
   });
 }
 
-function handleJobError(err, data, callback) {
+function processCleanUp(jobData, callback) {
+  fse.remove(jobData.tmpPath, function() {
+    console.log('Succesfully cleaned %s', jobData.tmpPath);
+  });
+  callback();
+}
+
+function handleJobError(err, data, job, callback) {
   if (err) {
-    console.error(err);
+    console.error(err, data);
   }
+
   callback(err, data);
 }
 

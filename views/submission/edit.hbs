@@ -1,0 +1,36 @@
+<header class="page-header">
+	<h3 class="page">Edit submission</h3>
+</header>
+
+<div class="row">
+	{{#with submission}}
+	<div class="col-sm-6 col-lg-8">
+		<img src="{{largeUrl}}" alt="">
+	</div>
+	<div class="col-sm-6 col-lg-4">
+		{{#if ../justUploaded}}
+		<div class="alert alert-success">
+			Your photo was succesfully uploaded.
+		</div>
+		{{/if}}
+		{{#if ../justSaved}}
+		<div class="alert alert-success">
+			Photo details successfully saved.
+		</div>
+		{{/if}}
+		<form action="/submission/edit/{{uuid}}" method="POST">
+			<div class="form-group">
+				<label for="inputTitle">Title</label>
+				<input class="form-control" type="text" name="title" id="inputTitle" value="{{title}}">
+			</div>
+			<div class="form-group">
+				<label for="inputDescription">Description</label>
+				<textarea class="form-control" type="text" name="description" id="inputDescription">{{description}}</textarea>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-success">Save</button>
+			</div>
+		</form>
+	</div>
+	{{/with}}
+</div>

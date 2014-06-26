@@ -1,0 +1,39 @@
+<header class="page-header">
+	<h3 class="page">Submissions by Category</h3>
+</header>
+
+{{#each categories}}
+<section class="submission-category">
+	<header>
+		<h3>{{title}}</h3>
+		<p>{{description}}</p>
+	</header>
+	<div class="row">
+		<div class="col-sm-3">
+			<h4>Upload new submission</h4>
+			{{#if canSubmit}}
+			<p>You may upload up to 3 submissions per category.</p>
+			<p><a href="/submission/upload/{{id}}" class="btn btn-success">Submit new entry</a></p>
+			{{else}}
+			<p>You have reached your limit of 3 submissions for this category.</p>
+			{{/if}}
+		</div>
+		<div class="col-sm-9">
+			<h4>Your submissions</h4>
+			<div class="row">
+				{{#each submissions}}
+				<div class="col-sm-4">
+					<p class="pull-right"><small><a href="/submission/edit/{{uuid}}">Edit submission</a></small></p>
+					<p><strong><a href="/submission/edit/{{uuid}}">{{#if title}}{{title}}{{else}}<i>(Untitled)</i>{{/if}}</a></strong></p>
+					<p><a href="/submission/edit/{{uuid}}"><img src="{{mediumUrl}}" alt=""></a></p>
+				</div>
+				{{else}}
+				<div class="col-sm-12">
+					<p>You have not submitted any entries for this category.</p>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+	</div>
+</section>
+{{/each}}

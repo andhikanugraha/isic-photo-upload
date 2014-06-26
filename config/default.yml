@@ -13,6 +13,17 @@ sizes:
   minimum: 1600
   large: 1280
   medium: 640
+  small: 320
   thumbnail: 240
 secret: TAEcfqXAxLJkbGUhvyVndRmK
 favicon: http://static.wixstatic.com/ficons/89355b_8adb1bc8d31a9b11a84eec6107dc1b89_fi.ico
+categories:
+  herethere:
+    title: Indonesia Here and There
+    description: Lorem ipsum dolor sit amet.
+  people:
+    title: Indonesian People Then and Now
+    description: Lorem ipsum dolor sit amet.
+  redwhite:
+    title: Red and White
+    description: Lorem ipsum dolor sit amet.

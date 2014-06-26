@@ -1,0 +1,13 @@
+<header class="page-header">
+	<h3 class="page">Submit new entry</h3>
+</header>
+
+{{#if error}}
+<div class="alert alert-error">
+	Failed processing your submission. Please try again.
+</div>
+{{else}}
+<p>Processing your upload... Please don't close this window.</p>
+
+<script>window.location.href = "{{redirectTo}}"</script>
+{{/if}}

@@ -18,6 +18,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 
 var db = require('./db');
 var routes = require('./routes');
+var submissionRoutes = require('./routes/submission');
+var votingRoutes = require('./routes/voting');
 
 // Config initialisation
 if (!config.port) {
@@ -46,7 +48,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(user, done) {
-  db.User.find({ id: user.id })
+  db.User.find({ where: user })
   .success(function(user) {
     done(null, user);
   }).error(done);
@@ -109,15 +111,30 @@ app.get('/auth/facebook', passport.authenticate('facebook', {
   scope: 'email'
 }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: '/upload',
+  successRedirect: '/',
   failureRedirect: '/?error=login'
 }));
 app.get('/logout', function(req, res, next) {
   req.logout();
-  req.redirect('/');
+  res.redirect('/');
+});
+
+app.use(function(req, res, next) {
+  if (req.user) {
+    app.locals.user = req.user;
+    app.locals.loggedIn = true;
+  }
+  else {
+    app.locals.user = {};
+    app.locals.loggedIn = false;
+  }
+
+  next();
 });
 
 app.use(routes);
+app.use('/submission', submissionRoutes);
+app.use('/vote', votingRoutes);
 
 // Error handling
 if (app.get('env') == 'development') {
