@@ -20,10 +20,18 @@ favicon: http://static.wixstatic.com/ficons/89355b_8adb1bc8d31a9b11a84eec6107dc1
 categories:
   herethere:
     title: Indonesia Here and There
-    description: Lorem ipsum dolor sit amet.
+    description: >-
+      Places, sceneries, events, architecture, arts and crafts,
+      or even foods that make you think of Indonesia.
+      They could be taken in Indonesia or anywhere else in the world.
   people:
     title: Indonesian People Then and Now
-    description: Lorem ipsum dolor sit amet.
+    description: >-
+      People who hold on to Indonesian culture and traditions,
+      or people who depict the current state of Indonesia.
+      They could be Indonesian or non-Indonesian people.
   redwhite:
     title: Red and White
-    description: Lorem ipsum dolor sit amet.
+    description: >-
+      These are the colours of Indonesian flag.
+      Red represents bravery and white represents purity.
