@@ -1,7 +1,7 @@
 var path = require('path');
 var _ = require('lodash');
 var async = require('async');
-var azureStorage = require('azure-storage');
+var azure = require('azure');
 var config = require('config');
 var fse = require('fs-extra');
 var gm = require('gm');
@@ -12,7 +12,7 @@ var db = require('./db');
 
 var jobs = kue.createQueue();
 
-var blobService = azureStorage.createBlobService(
+var blobService = azure.createBlobService(
                     config.azureStorage.accountName,
                     config.azureStorage.accountKey);
 
