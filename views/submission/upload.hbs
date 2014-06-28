@@ -1,14 +1,22 @@
 <header class="page-header">
-	<h3 class="page">Submit new entry</h3>
+	<h3 class="page">Add new submission</h3>
 </header>
 
 <div class="row">
-	<div class="col-sm-6">
-		<h4>Requirements for uploads</h4>
-		<p>(Insert paragraphs from the rulebook)</p>
+	<div class="col-sm-8 col-md-6">
+		<h4>Requirements for submissions</h4>
+		<ol>
+			<li>Photographs must be in digital format, but not necessarily taken only with a digital camera. Scans of negatives, transparencies, or photographic prints are acceptable. All digital files must be at maximum 5 megabytes, must be in JPEG or JPG format, and must be at least 1,600 pixels wide (if a horizontal image) or 1,600 pixels tall (if a vertical image).</li>
+			<li>Photographs must have been taken within six months before the date of entry.</li>
+			<li>Minor burning, dodging, color correction and/or cropping is acceptable, as long as the content is not manipulated. High dynamic range images (HDR) and stitched panoramas are NOT acceptable. The judging panel reserves the right to exclude any entries they believe may have been excessively treated so as to alter its authenticity.</li>
+			<li>Photographs must be the original work of the entrant and must not infringe the rights of any other party. Entrants must have obtained permission of any people featured in the entries or their parents/guardians if children under 16 are featured. Further, entrants must not have breached any laws when taking their photographs.</li>
+			<li>Prior to submission, photographs must not have been offered for sale, published for money, or won in any other photographic competition.</li>
+			<li>Photographs must not, in the sole and unfettered discretion of the GCN 2014 Committee, contain obscene, provocative, defamatory, sexually explicit, or otherwise objectionable or inappropriate content.</li>
+			<li>Watermarks are not acceptable. If GCN 2014 Committee does not receive a non-watermarked version of the entry within ten (10) days following its request, the entry will be disqualified.</li>
+		</ol>
 	</div>
-	<div class="col-sm-6">
-		<h4>Upload for category: {{categoryTitle}}</h4>
+	<div class="col-sm-4 col-md-6">
+		<h4><span class="text-muted">Upload to category:</span> {{categoryTitle}}</h4>
 		{{#if error}}
 		{{#if invalidFormat}}
 		<div class="alert alert-danger">
