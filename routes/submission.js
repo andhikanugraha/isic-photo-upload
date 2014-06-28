@@ -59,7 +59,6 @@ function validateUpload(src, callback) {
 
         var longestDimension = Math.max(size.width, size.height);
         if (longestDimension < config.sizes.minimum) {
-          console.log('zsdproblem');
           return callback('invalid_size');
         }
 
