@@ -19,7 +19,7 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var db = require('./db');
 var routes = require('./routes');
 var submissionRoutes = require('./routes/submission');
-var votingRoutes = require('./routes/voting');
+var publicRoutes = require('./routes/public');
 
 // Config initialisation
 if (!config.port) {
@@ -133,8 +133,8 @@ app.use(function(req, res, next) {
 });
 
 app.use(routes);
+app.use(publicRoutes);
 app.use('/submission', submissionRoutes);
-app.use('/vote', votingRoutes);
 
 // Error handling
 if (app.get('env') == 'development') {
