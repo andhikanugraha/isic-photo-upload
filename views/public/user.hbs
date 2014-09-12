@@ -1,0 +1,22 @@
+<div class="container-fluid user-profile">
+
+	<h2 class="page-header">{{profile.displayName}}</h2>
+
+	{{#each categories}}
+	<section class="profile-category">
+		<header>
+			<h4>{{title}}</h4>
+			<p>{{description}}</p>
+		</header>
+		<div class="row">
+			{{#each submissions}}
+			<div class="col-sm-4">
+				<p><a href="/view/{{uuid}}"><img src="{{mediumUrl}}" alt=""></a></p>
+				<p><strong><a href="/view/{{uuid}}">{{#if title}}{{title}}{{else}}<i>(Untitled)</i>{{/if}}</a></strong></p>
+			</div>
+			{{/each}}
+		</div>
+	</section>
+	{{/each}}
+
+</div>

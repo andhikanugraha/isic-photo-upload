@@ -1,0 +1,98 @@
+@import 'bootstrap/bootstrap.less';
+@import url(http://fonts.googleapis.com/css?family=Lato:400,300,700,400italic);
+
+@font-family-base: Lato;
+
+.submission-details {
+	background: #000;
+	padding-bottom: 120px;
+}
+
+.site-header {
+	text-align: center;
+	padding: 30px 0;
+	background: #000;
+
+	h1 {
+		margin: 0;
+		line-height: 1;
+		font-size: @font-size-base;
+		text-transform: uppercase;
+		letter-spacing: .1em;
+		font-weight: 300;
+		color: #999;
+
+		span {
+			color: #fff;
+			font-weight: 700;
+		}
+	}
+}
+
+.site-footer {
+  border-top: 1px solid @page-header-border-color;
+  padding-top: @line-height-computed;
+  padding-bottom: 2 * @line-height-computed;
+	font-size: @font-size-small;
+	text-align: center;
+	color: @gray-light;
+	background: white;
+
+	.logos {
+		word-spacing: 1em;
+	}
+}
+
+.user-profile {
+	text-align: center;
+}
+
+.image {
+	.container-fluid;
+	background: #000;
+	text-align: center;
+
+	img {
+		max-width: 100%;
+		max-height: 600px;
+	}
+}
+
+img {
+	max-width: 100%;
+}
+
+.image-meta {
+	.container;
+	text-align: center;
+	h2 {
+		text-align: center;
+		color: #eee;
+		font-weight: 300;
+	}
+
+	p.photographer {
+		text-transform: uppercase;
+		letter-spacing: .05em;
+		a {
+			font-weight: 700;
+			color: #ccc;
+		}
+		span {
+			font-weight: 300;
+			color: #666;
+		}
+	}
+
+	.vote {
+		p {
+			color: #999;
+		}
+	}
+
+	.description {
+		max-width: 40em;
+		margin: 20px auto;
+		color: #666;
+	}
+}
