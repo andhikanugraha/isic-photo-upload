@@ -111,7 +111,7 @@ app.get('/auth/facebook', passport.authenticate('facebook', {
   scope: 'email'
 }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: '/',
+  successRedirect: '/submission',
   failureRedirect: '/?error=login'
 }));
 app.get('/logout', function(req, res, next) {
@@ -132,9 +132,15 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(routes);
-app.use(publicRoutes);
-app.use('/submission', submissionRoutes);
+app.locals.facebookAppId = config.facebook.appId;
+
+if (config.public) {
+  app.use(publicRoutes);
+}
+else {
+  app.use(routes);
+  app.use('/submission', submissionRoutes);
+}
 
 // Error handling
 if (app.get('env') == 'development') {

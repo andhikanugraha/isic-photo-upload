@@ -1,0 +1,35 @@
+<div class="container">
+	{{#if nosubmissions}}
+
+	<div class="alert alert-dark">You have not uploaded any submissions, so you have been logged out. <a href="/" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></a></div>
+	{{/if}}
+  {{#if title}}
+  <h3 class="page-header">{{title}}</h3>
+  {{else}}
+  <h3 class="page-header cta">Vote for your favourite photo</h3>
+  {{/if}}
+	<div class="submission-list" id="submissionList">
+	{{#each submissions}}
+		<div class="submission">
+			<a href="{{viewUrl}}"><img src="{{smallUrl}}" alt=""></a>
+		</div>
+	{{/each}}	
+	</div>
+	<div class="pagination-wrapper">
+		{{pagination}}
+	</div>
+</div>
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script>
+imagesLoaded('#submissionList', function() {
+	var imgs = document.querySelectorAll('#submissionList img');
+	for (var i = 0; i < imgs.length; ++i) {
+		var img = imgs[i];
+		if (img.width < img.height) {
+			img.parentNode.parentNode.className = 'submission tall';
+		}
+	}
+	new Masonry('#submissionList');
+});
+</script>

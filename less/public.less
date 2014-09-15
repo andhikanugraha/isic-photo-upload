@@ -3,33 +3,116 @@
 
 @font-family-base: Lato;
 
-.submission-details {
+body {
+	background: #0a0a0a;
+	border-top: 5px solid #a00;
+}
+
+.page-header {
+	text-align: center;
+	border: 0;
+	padding-top: 0;
+	margin-top: 0;
+	color: #ddd;
+	font-weight: 700;
+	&.cta {
+		font-weight: 300;
+	}
+}
+
+.submission-list {
+	text-align: center;
+	.submission {
+		width: (100% / 6);
+		display: inline-block;
+		border: 2px solid #000;
+	}
+}
+.submission-list-large {
+	text-align: center;
+	.submission {
+		width: (100% / 3);
+		display: inline-block;
+		border: 2px solid #000;
+	}
+}
+.login-link {
+	text-align: center;
+	.btn-dark {
+		color: #999;
+		border-color: #222;
+	}
+}
+.alert-dark {
+	border-color: #222;
+	color: #999;
 	background: #000;
-	padding-bottom: 120px;
+	text-align: center;
+
+	.close {
+		background: #666;
+		width: 1em;
+		border-radius: 3em;
+		text-align: center;
+	}
+}
+.pagination-wrapper {
+	text-align: center;
+	.pagination {
+		border-color: #222;
+		a {
+			border-color: #222;
+			background: #000;
+			color: #999;
+			&:hover {
+				background: #999;
+				color: #000;
+				border-color: #222;
+			}
+		}
+		li.active a {
+			background: #222;
+			color: #fff;
+		}
+		li.disabled a {
+			background: #000;
+			color: #666;
+			&:hover {
+				background: #000;
+				color: #666;
+				border-color: #222;
+			}
+		}
+	}
 }
 
 .site-header {
 	text-align: center;
 	padding: 30px 0;
-	background: #000;
 
 	h1 {
 		margin: 0;
 		line-height: 1;
 		font-size: @font-size-base;
 		text-transform: uppercase;
-		letter-spacing: .1em;
-		font-weight: 400;
-		color: #999;
+		letter-spacing: 1px;
+		font-weight: 300;
 
+		a {
+			color: #f00;
+			text-decoration: none;
+			padding: 5px;
+		}
 		span {
 			color: #fff;
 			font-weight: 700;
+			margin-right: 1em;
 		}
 	}
 }
 
 .site-footer {
+  margin-top: 80px;
   border-top: 1px solid @page-header-border-color;
   padding-top: @line-height-computed;
   padding-bottom: 2 * @line-height-computed;
@@ -43,18 +126,14 @@
 	}
 }
 
-.user-profile {
-	text-align: center;
-}
-
 .image {
 	.container-fluid;
-	background: #000;
 	text-align: center;
 
 	img {
 		max-width: 100%;
 		max-height: 600px;
+		border: 5px solid #000;
 	}
 }
 
@@ -65,35 +144,38 @@ img {
 .image-meta {
 	.container;
 	text-align: center;
-	h2 {
+	.title {
 		margin-top: 40px;
 		text-align: center;
 		color: #eee;
-		font-weight: 300;
+		font-weight: 700;
 	}
 
 	p.photographer {
-		text-transform: uppercase;
-		letter-spacing: .05em;
 		a {
+			text-transform: uppercase;
 			font-weight: 700;
-			color: #ccc;
+			color: #aaa;
 		}
 		span {
 			font-weight: 300;
-			color: #666;
+			color: #444;
+			text-transform: lowercase;
+			font-style: italic;
 		}
 	}
 
 	.vote {
 		p {
-			color: #999;
+			color: #666;
+			font-style: italic;
 		}
 	}
 
 	.description {
 		max-width: 40em;
 		margin: 20px auto;
-		color: #666;
+		color: #999;
+		font-size: 1.2 * @font-size-base;
 	}
 }

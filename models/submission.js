@@ -22,11 +22,13 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     getterMethods: {
-      fullUrl: function() { return this.getSizeUrl('full') },
-      largeUrl: function() { return this.getSizeUrl('large') },
-      mediumUrl: function() { return this.getSizeUrl('medium') },
-      smallUrl: function() { return this.getSizeUrl('small') },
-      thumbnailUrl: function() { return this.getSizeUrl('thumbnail') }
+      fullUrl: function() { return this.getSizeUrl('full'); },
+      largeUrl: function() { return this.getSizeUrl('large'); },
+      mediumUrl: function() { return this.getSizeUrl('medium'); },
+      smallUrl: function() { return this.getSizeUrl('small'); },
+      thumbnailUrl: function() { return this.getSizeUrl('thumbnail'); },
+      viewUrl: function() { return config.baseUrl + '/view/' + this.uuid; },
+      viewUrlEncoded: function() { return encodeURIComponent(this.viewUrl); }
     }
   });
 };

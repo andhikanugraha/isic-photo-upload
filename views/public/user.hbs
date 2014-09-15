@@ -1,22 +1,23 @@
-<div class="container-fluid user-profile">
 
-	<h2 class="page-header">{{profile.displayName}}</h2>
+	<h3 class="page-header">{{profile.displayName}}</h3>
 
-	{{#each categories}}
-	<section class="profile-category">
-		<header>
-			<h4>{{title}}</h4>
-			<p>{{description}}</p>
-		</header>
-		<div class="row">
+	<div class="container">
+		<div class="submission-list-large" id="submissionList">
+		{{#each categories}}
 			{{#each submissions}}
-			<div class="col-sm-4">
-				<p><a href="/view/{{uuid}}"><img src="{{mediumUrl}}" alt=""></a></p>
-				<p><strong><a href="/view/{{uuid}}">{{#if title}}{{title}}{{else}}<i>(Untitled)</i>{{/if}}</a></strong></p>
+			<div class="submission">
+				<a href="/view/{{uuid}}"><img src="{{mediumUrl}}" alt=""></a>
 			</div>
 			{{/each}}
+		{{/each}}
 		</div>
-	</section>
-	{{/each}}
+	</div>
 
-</div>
+
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script>
+if (document.querySelectorAll('.submission').length > 3) {
+	new Masonry('#submissionList');
+}
+</script>

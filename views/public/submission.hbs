@@ -5,7 +5,7 @@
 	</div>
 	<div class="image-meta">
 		<h2 class="title">{{#if title}}{{title}}{{else}}<i>(Untitled)</i>{{/if}}</h2>
-		<p class="photographer"><span class="by">By</span> <a href="/by/{{photographer.facebookId}}">{{photographer.displayName}}</a> <span class="in">in</span> <a href="/cat/{{category}}">{{categoryMeta.title}}</a></p>
+		<p class="photographer"><span class="by">By</span> <a href="/by/{{photographer.id}}">{{photographer.displayName}}</a> <span class="in">in</span> <a href="/cat/{{category}}">{{categoryMeta.title}}</a></p>
 
 		<div class="description">
 			{{description}}
@@ -13,6 +13,7 @@
 
 		<div class="vote">
 			<p>Vote for this by clicking Like below.</p>
+			<iframe src="//www.facebook.com/plugins/like.php?href={{viewUrlEncoded}}&amp;width=55&amp;layout=box_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=65&amp;appId=1430649763878341" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:65px; width: 55px" allowTransparency="true"></iframe>
 		</div>
 	</div>
 </div>

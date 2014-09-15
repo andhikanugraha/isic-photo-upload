@@ -20,7 +20,7 @@
 
   <body>
     <header class="site-header">
-      <h1><span>Gala Cultural Night 2014</span> Photography Competition</h1>
+      <h1><a href="/"><span>Gala Cultural Night 2014</span> Photography Competition</a></h1>
     </header>
 
 {{!--       <header class="site-header">
@@ -28,6 +28,15 @@
       </header> --}}
 
       {{{body}}}
+
+    <div class="login-link">
+      {{#if loggedIn}}
+      <a href="/submission" class="btn btn-success btn-sm"><b>View my submissions</b></a>
+      <a href="/submission" class="btn btn-dark btn-sm">Log out</a>
+      {{else}}
+      <a href="/auth/facebook" class="btn btn-dark btn-sm"><b>Registered participants:</b> Log in with Facebook</a>
+      {{/if}}
+    </div>
 
     <footer class="site-footer">
       <div class="container-fluid">
@@ -55,7 +64,9 @@
       </div>
     </footer>
 
+    {{!--
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script> 
+    --}}
   </body>
 </html>
