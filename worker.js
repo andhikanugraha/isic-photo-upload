@@ -39,7 +39,12 @@ function processJob(job, callback) {
   async.series({
     validation: function(callback) {
       console.log('Validating...');
-      processValidation(jobData, callback);
+      if (jobData.validate === false) {
+        callback();
+      }
+      else {
+        processValidation(jobData, callback);
+      }
     },
     tmp: function(callback) {
       console.log('Generating tmp dir...');

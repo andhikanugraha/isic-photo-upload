@@ -52,37 +52,38 @@ var csvPromise = new Promise(function(resolve, reject) {
 });
 
 function validateUpload(src, callback) {
-  var originalImg = gm(src);
+  return callback();
+  // var originalImg = gm(src);
 
-  async.series([
-    function checkFormat(callback) {
-      originalImg.format(function(err, format) {
-        if (err) {
-          return callback(err);
-        }
+  // async.series([
+  //   function checkFormat(callback) {
+  //     originalImg.format(function(err, format) {
+  //       if (err) {
+  //         return callback(err);
+  //       }
 
-        if (format !== 'JPEG') {
-          return callback('invalid_format');
-        }
+  //       if (format !== 'JPEG') {
+  //         return callback('invalid_format');
+  //       }
 
-        callback();
-      });
-    },
-    function checkSize(callback) {
-      originalImg.size(function(err, size) {
-        if (err) {
-          return callback(err);
-        }
+  //       callback();
+  //     });
+  //   },
+  //   function checkSize(callback) {
+  //     originalImg.size(function(err, size) {
+  //       if (err) {
+  //         return callback(err);
+  //       }
 
-        var longestDimension = Math.max(size.width, size.height);
-        if (longestDimension < config.sizes.minimum) {
-          return callback('invalid_size');
-        }
+  //       var longestDimension = Math.max(size.width, size.height);
+  //       if (longestDimension < config.sizes.minimum) {
+  //         return callback('invalid_size');
+  //       }
 
-        return callback();
-      });
-    }
-  ], callback);
+  //       return callback();
+  //     });
+  //   }
+  // ], callback);
 }
 
 var filterPromise = csvPromise.then(function(rows) {
@@ -118,7 +119,8 @@ function upload(sub) {
       uuid: jobUuid,
       src: sub.fileName,
       userId: sub.userId,
-      category: sub.category
+      category: sub.category,
+      validate: false
     };
 
     var job = jobs.create('process submission', jobData);
