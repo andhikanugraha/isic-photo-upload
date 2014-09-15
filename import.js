@@ -137,26 +137,26 @@ function upload(sub) {
 }
 
 filterPromise.then(function(filteredRows) {
-  var uploadPromises = [];
+  var uploadPromises = Promise.resolve();
   
   _.each(filteredRows, function(sub) {
-    var p = db.User.findOrCreate({ email: sub.email }, {
-      displayName: sub.name /*,
-      postalAddress: sub.postalAddress || undefined,
-      postalAddressCountry: sub.postalAddressCountry,
-      phoneNumber: sub.phoneNumber.toString() */
-    }).then(function(user) {
-      sub.userId = user.id;
-      return sub;
-    }).then(function(sub) {
-      console.log('Uploading ' + sub.fileName);
-      return upload(sub);
+    uploadPromises = uploadPromises.then(function() {
+      return db.User.findOrCreate({ email: sub.email }, {
+        displayName: sub.name /*,
+        postalAddress: sub.postalAddress || undefined,
+        postalAddressCountry: sub.postalAddressCountry,
+        phoneNumber: sub.phoneNumber.toString() */
+      }).then(function(user) {
+        sub.userId = user.id;
+        return sub;
+      }).then(function(sub) {
+        console.log('Uploading ' + sub.fileName);
+        return upload(sub);
+      });
     });
-
-    uploadPromises.push(p);
   });
 
-  return Promise.all(uploadPromises);
+  return uploadPromises;
 }).catch(function(err) {
   console.dir(err);
 });
