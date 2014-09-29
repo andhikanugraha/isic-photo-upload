@@ -8,6 +8,11 @@
   {{else}}
   <h3 class="page-header cta">Vote for your favourite photo</h3>
   {{/if}}
+  <p class="category-links">
+  	<a href="/cat/herethere">Indonesia Here and There</a>
+  	<a href="/cat/people">Indonesian People Then and Now</a>
+  	<a href="/cat/redwhite">Red and White</a>
+  </p>
 	<div class="submission-list" id="submissionList">
 	{{#each submissions}}
 		<div class="submission">
@@ -15,14 +20,41 @@
 		</div>
 	{{/each}}	
 	</div>
-	<div class="pagination-wrapper">
+	{{!-- <div class="pagination-wrapper">
 		{{pagination}}
-	</div>
+	</div> --}}
 </div>
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.1.min.js"></script>
 <script src="/js/imagesloaded.pkgd.min.js"></script>
 <script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/jquery.infinite-scroll-helper.min.js"></script>
 <script>
-imagesLoaded('#submissionList', function() {
+var imgs = {{{imgsJson}}};
+var perPage = 30;
+var submissionList = $('#submissionList');
+
+submissionList.infiniteScrollHelper({
+  loadMore: function(page, done) {
+  	console.log(page);
+    var start = (page - 1) * perPage;
+    var end = Math.min(start + perPage, imgs.length);
+    console.log(start);
+    console.log(end);
+    var newHtml = '';
+    for (var i = start; i < end; ++i) {
+    	var img = imgs[i];
+    	newHtml += '<div class="submission"><a href="' + img.v + '"><img src="' + img.i + '" alt=""></a></div>';
+    }
+
+    console.log(newHtml);
+    submissionList.append(newHtml);
+
+    onImagesLoaded();
+    done(true);
+  }
+});
+
+function onImagesLoaded() {
 	var imgs = document.querySelectorAll('#submissionList img');
 	for (var i = 0; i < imgs.length; ++i) {
 		var img = imgs[i];
@@ -31,5 +63,6 @@ imagesLoaded('#submissionList', function() {
 		}
 	}
 	new Masonry('#submissionList');
-});
+}
+imagesLoaded('#submissionList', onImagesLoaded);
 </script>

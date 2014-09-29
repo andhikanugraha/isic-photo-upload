@@ -20,14 +20,26 @@ function getSubmissions(where, page, perPage) {
   var offset = (page - 1) * perPage;
 
   var params = {
-    offset: offset,
-    limit: perPage
+    offset: 0,
+    limit: 2000,
+    order: 'random()'
   };
   if (where) {
     params.where = where;
   }
 
-  return db.Submission.findAndCountAll(params);
+  return db.Submission.findAndCountAll(params).then(function(data) {
+    var smallUrls = [];
+    _.each(data.rows, function(row) {
+      smallUrls.push({
+        v: row.viewUrl,
+        i: row.smallUrl
+      });
+    });
+    data.smallUrls = smallUrls;
+    data.rows = data.rows.slice(offset, offset + perPage);
+    return data;
+  });
 }
 
 var outputCacheMiddleware = outputCache(86400);
@@ -130,6 +142,7 @@ routes.get('/page/:page', function(req, res, next) {
     res.locals.currentPage = parseInt(req.params.page || 1);
     res.locals.submissions = data.rows;
     res.locals.loggedIn = !!req.user;
+    res.locals.imgsJson = JSON.stringify(data.smallUrls);
     res.render('public/index', { layout: 'layouts/public' });
   });
 });
@@ -148,6 +161,7 @@ routes.get('/cat/:catId', function(req, res, next) {
     res.locals.paginationBase = '/cat/' + catId;
     res.locals.submissions = data.rows;
     res.locals.loggedIn = !!req.user;
+    res.locals.imgsJson = JSON.stringify(data.smallUrls);
     res.locals.title = config.categories[catId].title;
     res.render('public/index', { layout: 'layouts/public' });
   });
@@ -167,6 +181,7 @@ routes.get('/cat/:catId/page/:page', function(req, res, next) {
     res.locals.paginationBase = '/cat/' + catId;
     res.locals.submissions = data.rows;
     res.locals.loggedIn = !!req.user;
+    res.locals.imgsJson = JSON.stringify(data.smallUrls);
     res.locals.title = config.categories[catId].title;
     res.render('public/index', { layout: 'layouts/public' });
   });
